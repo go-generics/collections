@@ -1,0 +1,2 @@
+# collections
+Go generic collections
