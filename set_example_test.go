@@ -11,12 +11,12 @@ func ExampleNewSet() {
 
 	fmt.Println(set.Has(0))
 	fmt.Println(set.Has(1))
-	fmt.Println(set.Has(2))
+	fmt.Println(!set.Has(2))
 
 	// Output:
 	// true
 	// true
-	// false
+	// true
 }
 
 func ExampleSet_Insert() {
@@ -25,12 +25,12 @@ func ExampleSet_Insert() {
 
 	fmt.Println(set.Has(0))
 	fmt.Println(set.Has(1))
-	fmt.Println(set.Has(2))
+	fmt.Println(!set.Has(2))
 
 	// Output:
 	// true
 	// true
-	// false
+	// true
 }
 
 func ExampleSet_Delete() {
@@ -38,11 +38,11 @@ func ExampleSet_Delete() {
 	set.Delete(1)
 
 	fmt.Println(set.Has(0))
-	fmt.Println(set.Has(1))
+	fmt.Println(!set.Has(1))
 
 	// Output:
 	// true
-	// false
+	// true
 }
 
 func ExampleSet_Iterate() {
@@ -119,24 +119,24 @@ func ExampleIsSubset() {
 
 	fmt.Println(collections.IsSubset(a, a))
 	fmt.Println(collections.IsSubset(a, b))
-	fmt.Println(collections.IsSubset(b, a))
+	fmt.Println(!collections.IsSubset(b, a))
 
 	// Output:
 	// true
 	// true
-	// false
+	// true
 }
 
 func ExampleIsProperSubset() {
 	a := collections.NewSet(1.2)
 	b := collections.NewSet(1.2, 3.4)
 
-	fmt.Println(collections.IsProperSubset(a, a))
+	fmt.Println(!collections.IsProperSubset(a, a))
 	fmt.Println(collections.IsProperSubset(a, b))
-	fmt.Println(collections.IsProperSubset(b, a))
+	fmt.Println(!collections.IsProperSubset(b, a))
 
 	// Output:
-	// false
 	// true
-	// false
+	// true
+	// true
 }
