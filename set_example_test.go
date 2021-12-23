@@ -45,10 +45,10 @@ func ExampleSet_Delete() {
 	// true
 }
 
-func ExampleSet_Iterate() {
+func ExampleSet_Each() {
 	set := collections.NewSet(3, 4)
 	sum := 0
-	set.Iterate(func(_, item int) {
+	set.Each(func(_, item int) {
 		sum += item
 	})
 
@@ -58,10 +58,10 @@ func ExampleSet_Iterate() {
 	// 7
 }
 
-func ExampleSet_IterateUntil() {
+func ExampleSet_EachUntil() {
 	set := collections.NewSet(3, 4)
 	sum := 0
-	set.IterateUntil(func(_, item int) {
+	set.EachUntil(func(_, item int) {
 		sum += item
 	}, func(_, item int) bool {
 		return true

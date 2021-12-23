@@ -26,7 +26,7 @@ func (s set[T]) Len() int {
 
 func (s set[T]) String() string {
 	items := make([]T, len(s))
-	s.Iterate(func(index int, item T) {
+	s.Each(func(index int, item T) {
 		items[index] = item
 	})
 	return fmt.Sprint(items)
@@ -47,7 +47,7 @@ func (s set[T]) Has(item T) bool {
 	return exists
 }
 
-func (s set[T]) Iterate(do func(index int, item T)) {
+func (s set[T]) Each(do func(index int, item T)) {
 	i := 0
 	for item := range s {
 		do(i, item)
@@ -55,7 +55,7 @@ func (s set[T]) Iterate(do func(index int, item T)) {
 	}
 }
 
-func (s set[T]) IterateUntil(do func(index int, item T), stop func(index int, item T) bool) {
+func (s set[T]) EachUntil(do func(index int, item T), stop func(index int, item T) bool) {
 	i := 0
 	for item := range s {
 		do(i, item)
@@ -69,11 +69,11 @@ func (s set[T]) IterateUntil(do func(index int, item T), stop func(index int, it
 func Union[T comparable](s1 Set[T], s2 Set[T]) Set[T] {
 	result := NewSet[T]()
 
-	s1.Iterate(func(_ int, item T) {
+	s1.Each(func(_ int, item T) {
 		result.Insert(item)
 	})
 
-	s2.Iterate(func(_ int, item T) {
+	s2.Each(func(_ int, item T) {
 		result.Insert(item)
 	})
 
@@ -83,7 +83,7 @@ func Union[T comparable](s1 Set[T], s2 Set[T]) Set[T] {
 func Difference[T comparable](s1 Set[T], s2 Set[T]) Set[T] {
 	result := NewSet[T]()
 
-	s1.Iterate(func(_ int, item T) {
+	s1.Each(func(_ int, item T) {
 		if !s2.Has(item) {
 			result.Insert(item)
 		}
@@ -100,7 +100,7 @@ func Intersection[T comparable](s1 Set[T], s2 Set[T]) Set[T] {
 		a, b = b, a
 	}
 
-	a.Iterate(func(_ int, item T) {
+	a.Each(func(_ int, item T) {
 		if b.Has(item) {
 			result.Insert(item)
 		}
@@ -115,7 +115,7 @@ func IsSubset[T comparable](s1 Set[T], s2 Set[T]) bool {
 	}
 
 	possibleSubset := true
-	s1.IterateUntil(func(_ int, item T) {
+	s1.EachUntil(func(_ int, item T) {
 		if !s2.Has(item) {
 			possibleSubset = false
 		}
