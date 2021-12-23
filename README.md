@@ -2,6 +2,8 @@
 
 Go generic collections
 
+`import "github.com/go-generics/collections"`
+
 ## Set
 
 ```go
