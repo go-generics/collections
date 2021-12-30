@@ -51,7 +51,7 @@ func (s set[T]) Each(do func(index int, item T)) {
 	i := 0
 	for item := range s {
 		do(i, item)
-		i += 1
+		i++
 	}
 }
 
@@ -59,7 +59,7 @@ func (s set[T]) EachUntil(do func(index int, item T), stop func(index int, item 
 	i := 0
 	for item := range s {
 		do(i, item)
-		i += 1
+		i++
 		if stop(i, item) {
 			return
 		}

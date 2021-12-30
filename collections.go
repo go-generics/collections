@@ -2,7 +2,7 @@ package collections
 
 import "fmt"
 
-type Collection[T comparable] interface {
+type Collection[T any] interface {
 	fmt.Stringer
 
 	Len() int
