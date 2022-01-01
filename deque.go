@@ -29,11 +29,11 @@ type Deque[T any] interface {
 	Front() T
 }
 
-func (d deque[T]) Len() int {
+func (d *deque[T]) Len() int {
 	return d.size
 }
 
-func (d deque[T]) String() string {
+func (d *deque[T]) String() string {
 	items := make([]T, d.size)
 	d.Each(func(index int, item T) {
 		items[index] = item
@@ -41,13 +41,13 @@ func (d deque[T]) String() string {
 	return fmt.Sprint(items)
 }
 
-func (d deque[T]) Each(do func(index int, item T)) {
+func (d *deque[T]) Each(do func(index int, item T)) {
 	for node, i := d.front, 0; node != nil; node, i = node.next, i+1 {
 		do(i, node.value)
 	}
 }
 
-func (d deque[T]) EachUntil(do func(index int, item T), stop func(index int, item T) bool) {
+func (d *deque[T]) EachUntil(do func(index int, item T), stop func(index int, item T) bool) {
 	for node, i := d.front, 0; node != nil; node, i = node.next, i+1 {
 		do(i, node.value)
 		if stop(i, node.value) {
