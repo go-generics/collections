@@ -9,27 +9,27 @@ import (
 func ExampleDeque_PushBack() {
 	deque := collections.NewDeque[int]()
 
-	deque.PushBack(4)
-	deque.PushBack(5)
-	deque.PushBack(6)
-
-	fmt.Print(deque)
-
-	// Output:
-	// [4 5 6]
-}
-
-func ExampleDeque_PushFront() {
-	deque := collections.NewDeque[int]()
-
-	deque.PushFront(3)
-	deque.PushFront(2)
-	deque.PushFront(1)
+	deque.PushBack(1)
+	deque.PushBack(2)
+	deque.PushBack(3)
 
 	fmt.Print(deque)
 
 	// Output:
 	// [1 2 3]
+}
+
+func ExampleDeque_PushFront() {
+	deque := collections.NewDeque[int]()
+
+	deque.PushFront(6)
+	deque.PushFront(5)
+	deque.PushFront(4)
+
+	fmt.Print(deque)
+
+	// Output:
+	// [4 5 6]
 }
 
 func ExampleDeque_PopBack() {
