@@ -15,8 +15,6 @@ type binaryTreeNode[T ordered] struct {
 	right *binaryTreeNode[T]
 }
 
-type binaryTreeNodeP[T ordered] *binaryTreeNode[T]
-
 func NewBinaryTree[T ordered]() BinaryTree[T] {
 	return &binaryTree[T]{}
 }
@@ -111,8 +109,8 @@ func (node *binaryTreeNode[T]) insert(item T) *binaryTreeNode[T] {
 	return node
 }
 
-func (node *binaryTree[T]) Insert(item T) {
-	node.binaryTreeNode = node.binaryTreeNode.insert(item)
+func (tree *binaryTree[T]) Insert(item T) {
+	tree.binaryTreeNode = tree.binaryTreeNode.insert(item)
 }
 
 func (node *binaryTreeNode[T]) merge(right *binaryTreeNode[T]) *binaryTreeNode[T] {
@@ -138,6 +136,6 @@ func (node *binaryTreeNode[T]) delete(item T) *binaryTreeNode[T] {
 	return node
 }
 
-func (node *binaryTree[T]) Delete(item T) {
-	node.binaryTreeNode = node.binaryTreeNode.delete(item)
+func (tree *binaryTree[T]) Delete(item T) {
+	tree.binaryTreeNode = tree.binaryTreeNode.delete(item)
 }
