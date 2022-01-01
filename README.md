@@ -50,3 +50,22 @@ fmt.Print(deque.Front())     // 2
 
 fmt.Print(deque)  // [2 3 4 5]
 ```
+
+## Binary Tree
+
+Implemented with nodes as structs, and references as pointers.
+
+```go
+tree := collections.NewBinaryTree[int]()
+
+tree.Insert(1)
+tree.Insert(2)
+fmt.Println(tree)  // [1 2]
+
+tree.Delete(1)
+tree.Delete(2)
+fmt.Println(tree)  // []
+
+tree.Delete(-1)
+fmt.Println(tree)  // []
+```

@@ -126,12 +126,14 @@ func (node *binaryTreeNode[T]) merge(right *binaryTreeNode[T]) *binaryTreeNode[T
 }
 
 func (node *binaryTreeNode[T]) delete(item T) *binaryTreeNode[T] {
-	if item == node.value {
+	if node == nil {
+		return nil
+	} else if item == node.value {
 		return node.left.merge(node.right)
 	} else if item < node.value {
-		node.left = node.left.insert(item)
+		node.left = node.left.delete(item)
 	} else {
-		node.right = node.right.insert(item)
+		node.right = node.right.delete(item)
 	}
 	return node
 }

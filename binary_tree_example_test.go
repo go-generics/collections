@@ -30,8 +30,12 @@ func ExampleBinaryTree_Delete() {
 	tree.Delete(2)
 	fmt.Println(tree)
 
+	tree.Delete(-1)
+	fmt.Println(tree)
+
 	// Output:
 	// [1 2]
+	// []
 	// []
 }
 
