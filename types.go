@@ -6,3 +6,9 @@ type ordered interface {
 		~float32 | ~float64 |
 		~string
 }
+
+type doublyLinkedNode[T ordered] struct {
+	value T
+	next  *doublyLinkedNode[T]
+	prev  *doublyLinkedNode[T]
+}

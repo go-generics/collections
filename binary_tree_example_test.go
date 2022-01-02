@@ -86,3 +86,18 @@ func ExampleBinaryTree_EachUntil() {
 	// Output:
 	// 6
 }
+
+func ExampleBinaryTree_ToDeque() {
+	tree := collections.NewBinaryTree[int]()
+	for i := 0; i < 1000; i++ {
+		tree.Insert(i)
+	}
+
+	deque := tree.ToDeque()
+	fmt.Println(deque.Front())
+	fmt.Println(deque.Back())
+
+	// Output:
+	// 0
+	// 999
+}

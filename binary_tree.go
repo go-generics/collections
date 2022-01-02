@@ -6,13 +6,7 @@ import (
 )
 
 type binaryTree[T ordered] struct {
-	*binaryTreeNode[T]
-}
-
-type binaryTreeNode[T ordered] struct {
-	value T
-	left  *binaryTreeNode[T]
-	right *binaryTreeNode[T]
+	*doublyLinkedNode[T]
 }
 
 func NewBinaryTree[T ordered]() BinaryTree[T] {
@@ -24,32 +18,33 @@ type BinaryTree[T ordered] interface {
 
 	Insert(item T)
 	Delete(item T)
+	ToDeque() Deque[T]
 }
 
-func (node *binaryTreeNode[T]) Len() int {
+func (node *doublyLinkedNode[T]) Len() int {
 	if node == nil {
 		return 0
 	}
-	return 1 + node.left.Len() + node.right.Len()
+	return 1 + node.prev.Len() + node.next.Len()
 }
 
-func (node *binaryTreeNode[T]) string() string {
+func (node *doublyLinkedNode[T]) string() string {
 	sb := &strings.Builder{}
 	if node != nil {
-		if node.left != nil {
-			sb.WriteString(node.left.string())
+		if node.prev != nil {
+			sb.WriteString(node.prev.string())
 			sb.WriteRune(' ')
 		}
 		fmt.Fprint(sb, node.value)
-		if node.right != nil {
+		if node.next != nil {
 			sb.WriteRune(' ')
-			sb.WriteString(node.right.string())
+			sb.WriteString(node.next.string())
 		}
 	}
 	return sb.String()
 }
 
-func (node *binaryTreeNode[T]) String() string {
+func (node *doublyLinkedNode[T]) String() string {
 	sb := &strings.Builder{}
 	sb.WriteRune('[')
 	sb.WriteString(node.string())
@@ -57,30 +52,30 @@ func (node *binaryTreeNode[T]) String() string {
 	return sb.String()
 }
 
-func (node *binaryTreeNode[T]) each(i *int, do func(index int, item T)) {
+func (node *doublyLinkedNode[T]) each(i *int, do func(index int, item T)) {
 	if node == nil {
 		return
 	}
 
-	node.left.each(i, do)
+	node.prev.each(i, do)
 
 	do(*i, node.value)
 	*i++
 
-	node.right.each(i, do)
+	node.next.each(i, do)
 }
 
-func (node *binaryTreeNode[T]) Each(do func(index int, item T)) {
+func (node *doublyLinkedNode[T]) Each(do func(index int, item T)) {
 	i := 0
 	node.each(&i, do)
 }
 
-func (node *binaryTreeNode[T]) eachUntil(i *int, do func(index int, item T), stop func(index int, item T) bool) {
+func (node *doublyLinkedNode[T]) eachUntil(i *int, do func(index int, item T), stop func(index int, item T) bool) {
 	if node == nil {
 		return
 	}
 
-	node.left.eachUntil(i, do, stop)
+	node.prev.eachUntil(i, do, stop)
 
 	do(*i, node.value)
 
@@ -90,52 +85,87 @@ func (node *binaryTreeNode[T]) eachUntil(i *int, do func(index int, item T), sto
 
 	*i++
 
-	node.right.eachUntil(i, do, stop)
+	node.next.eachUntil(i, do, stop)
 }
 
-func (node *binaryTreeNode[T]) EachUntil(do func(index int, item T), stop func(index int, item T) bool) {
+func (node *doublyLinkedNode[T]) EachUntil(do func(index int, item T), stop func(index int, item T) bool) {
 	i := 0
 	node.eachUntil(&i, do, stop)
 }
 
-func (node *binaryTreeNode[T]) insert(item T) *binaryTreeNode[T] {
+func (node *doublyLinkedNode[T]) insert(item T) *doublyLinkedNode[T] {
 	if node == nil {
-		node = &binaryTreeNode[T]{value: item}
+		node = &doublyLinkedNode[T]{value: item}
 	} else if item < node.value {
-		node.left = node.left.insert(item)
+		node.prev = node.prev.insert(item)
 	} else {
-		node.right = node.right.insert(item)
+		node.next = node.next.insert(item)
 	}
 	return node
 }
 
 func (tree *binaryTree[T]) Insert(item T) {
-	tree.binaryTreeNode = tree.binaryTreeNode.insert(item)
+	tree.doublyLinkedNode = tree.doublyLinkedNode.insert(item)
 }
 
-func (node *binaryTreeNode[T]) merge(right *binaryTreeNode[T]) *binaryTreeNode[T] {
+func (node *doublyLinkedNode[T]) merge(next *doublyLinkedNode[T]) *doublyLinkedNode[T] {
 	if node == nil {
-		return right
-	} else if right == nil {
+		return next
+	} else if next == nil {
 		return node
 	} else {
-		return node.right.merge(right)
+		return node.next.merge(next)
 	}
 }
 
-func (node *binaryTreeNode[T]) delete(item T) *binaryTreeNode[T] {
+func (node *doublyLinkedNode[T]) delete(item T) *doublyLinkedNode[T] {
 	if node == nil {
 		return nil
 	} else if item == node.value {
-		return node.left.merge(node.right)
+		return node.prev.merge(node.next)
 	} else if item < node.value {
-		node.left = node.left.delete(item)
+		node.prev = node.prev.delete(item)
 	} else {
-		node.right = node.right.delete(item)
+		node.next = node.next.delete(item)
 	}
 	return node
 }
 
 func (tree *binaryTree[T]) Delete(item T) {
-	tree.binaryTreeNode = tree.binaryTreeNode.delete(item)
+	tree.doublyLinkedNode = tree.doublyLinkedNode.delete(item)
+}
+
+func (node *doublyLinkedNode[T]) toDeque() *deque[T] {
+	if node == nil {
+		return &deque[T]{}
+	}
+
+	dequeLeft := node.prev.toDeque()
+	dequeRight := node.next.toDeque()
+
+	node.prev = dequeLeft.back
+	node.next = dequeRight.front
+
+	front, back := node, node
+
+	if node.prev != nil {
+		node.prev.next = node
+		front = dequeLeft.front
+	}
+	if node.next != nil {
+		node.next.prev = node
+		back = dequeRight.back
+	}
+
+	return &deque[T]{
+		size:  dequeLeft.size + 1 + dequeRight.size,
+		front: front,
+		back:  back,
+	}
+}
+
+func (tree *binaryTree[T]) ToDeque() Deque[T] {
+	d := tree.toDeque()
+	tree.doublyLinkedNode = nil
+	return d
 }

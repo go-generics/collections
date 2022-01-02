@@ -2,23 +2,17 @@ package collections
 
 import "fmt"
 
-type deque[T any] struct {
+type deque[T ordered] struct {
 	size  int
-	front *dequeNode[T]
-	back  *dequeNode[T]
+	front *doublyLinkedNode[T]
+	back  *doublyLinkedNode[T]
 }
 
-type dequeNode[T any] struct {
-	value T
-	next  *dequeNode[T]
-	prev  *dequeNode[T]
-}
-
-func NewDeque[T any]() Deque[T] {
+func NewDeque[T ordered]() Deque[T] {
 	return &deque[T]{}
 }
 
-type Deque[T any] interface {
+type Deque[T ordered] interface {
 	Collection[T]
 
 	PushBack(item T)
@@ -57,7 +51,7 @@ func (d *deque[T]) EachUntil(do func(index int, item T), stop func(index int, it
 }
 
 func (d *deque[T]) PushBack(item T) {
-	newNode := dequeNode[T]{
+	newNode := doublyLinkedNode[T]{
 		value: item,
 		prev:  d.back,
 	}
@@ -71,7 +65,7 @@ func (d *deque[T]) PushBack(item T) {
 }
 
 func (d *deque[T]) PushFront(item T) {
-	newNode := dequeNode[T]{
+	newNode := doublyLinkedNode[T]{
 		value: item,
 		next:  d.front,
 	}
