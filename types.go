@@ -8,7 +8,8 @@ type ordered interface {
 }
 
 type doublyLinkedNode[T ordered] struct {
-	value T
 	next  *doublyLinkedNode[T]
 	prev  *doublyLinkedNode[T]
+	size  int
+	value T
 }

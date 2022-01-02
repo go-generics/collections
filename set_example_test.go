@@ -21,7 +21,8 @@ func ExampleNewSet() {
 
 func ExampleSet_Insert() {
 	set := collections.NewSet[int]()
-	set.Insert(0, 1)
+	set.Insert(0)
+	set.Insert(1)
 
 	fmt.Println(set.Has(0))
 	fmt.Println(set.Has(1))

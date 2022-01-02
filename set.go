@@ -7,16 +7,20 @@ type nothing struct{}
 type set[T comparable] map[T]nothing
 
 type Set[T comparable] interface {
-	Collection[T]
+	fmt.Stringer
 
-	Insert(items ...T)
-	Delete(item T)
-	Has(item T) bool
+	Collection
+	Deleter[T]
+	Eacher[T]
+	Inserter[T]
+	Haser[T]
 }
 
 func NewSet[T comparable](items ...T) Set[T] {
 	s := set[T]{}
-	s.Insert(items...)
+	for _, item := range items {
+		s.Insert(item)
+	}
 	return s
 }
 
@@ -32,10 +36,8 @@ func (s set[T]) String() string {
 	return fmt.Sprint(items)
 }
 
-func (s set[T]) Insert(items ...T) {
-	for _, item := range items {
-		s[item] = nothing{}
-	}
+func (s set[T]) Insert(item T) {
+	s[item] = nothing{}
 }
 
 func (s set[T]) Delete(item T) {

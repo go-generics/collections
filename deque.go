@@ -13,14 +13,11 @@ func NewDeque[T ordered]() Deque[T] {
 }
 
 type Deque[T ordered] interface {
-	Collection[T]
-
-	PushBack(item T)
-	PushFront(item T)
-	PopBack() T
-	PopFront() T
-	Back() T
-	Front() T
+	fmt.Stringer
+	Collection
+	Eacher[T]
+	Backer[T]
+	Fronter[T]
 }
 
 func (d *deque[T]) Len() int {

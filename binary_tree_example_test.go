@@ -101,3 +101,23 @@ func ExampleBinaryTree_ToDeque() {
 	// 0
 	// 999
 }
+
+func ExampleBinaryTree_Levels() {
+	tree := collections.NewBinaryTree[int]()
+	tree.Insert(100)
+
+	tree.Insert(50)
+	tree.Insert(150)
+
+	tree.Insert(25)
+	tree.Insert(75)
+	tree.Insert(125)
+	tree.Insert(175)
+
+	tree.Levels()
+
+	// Output:
+	//  100
+	//  50 150
+	//  25 75 125 175
+}
