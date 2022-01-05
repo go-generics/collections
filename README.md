@@ -69,3 +69,24 @@ fmt.Println(tree)  // []
 tree.Delete(-1)
 fmt.Println(tree)  // []
 ```
+
+## Implicit Treap
+
+Implemented with a binary tree, nodes as structs and references as pointers.
+
+Priority is random, stored in each node, and the structure is a binary heap on the priorities.
+
+The key for every value is the position in a sequence.
+So the implicit key for every node is the position it has during an in-order traversal.
+The structure is a Binary Search Tree on the keys.
+
+https://en.wikipedia.org/wiki/Treap
+
+https://en.wikipedia.org/wiki/Cartesian_tree
+
+https://cp-algorithms.com/data_structures/treap.html
+
+```go
+treap := collections.NewImplicitTreap(3, 1, 4, 1, 5, 4, 9, 2)
+fmt.Println(treap)  // 3 1 4 1 5 4 9 2
+```
