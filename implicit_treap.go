@@ -86,6 +86,24 @@ func (n *ImplicitTreapNode[T]) updatePriorities() {
 	}
 }
 
+func (it *ImplicitTreap[T]) DeleteAt(pos int) {
+	it.Root = it.Root.DeleteAt(pos)
+}
+
+func (p *ImplicitTreapNode[T]) DeleteAt(pos int) *ImplicitTreapNode[T] {
+	if p == nil {
+		return p
+	} else if p.Left.effectiveSize() == pos {
+		return p.Left.Merge(p.Right)
+	} else if p.Left.effectiveSize() < pos {
+		p.Left = p.Left.DeleteAt(pos)
+	} else {
+		p.Right = p.Right.DeleteAt(pos - p.Left.effectiveSize() - 1)
+	}
+	p.updateSize()
+	return p
+}
+
 func (it *ImplicitTreap[T]) Append(item T) {
 	right := NewImplicitTreapNode(item)
 	it.Root = it.Root.Merge(right)
